@@ -1,7 +1,7 @@
 # Contributing
 
 Behavior is governed by
-[kilden-sdk-spec](https://github.com/freshworkstudio/kilden-sdk-spec): the
+[kilden-sdk-spec](https://github.com/kildenhq/kilden-sdk-spec): the
 spec and its test vectors are the authority for what this SDK does. A PR
 that changes observable behavior without a matching spec change will be
 rejected, however good the code — that ordering is what keeps the five
@@ -23,5 +23,5 @@ those tests skip.
 
 ## Questions
 
-[Discussions](https://github.com/freshworkstudio/kilden-sdk-go/discussions),
+[Discussions](https://github.com/kildenhq/kilden-sdk-go/discussions),
 please — answers there stay searchable.

@@ -5,8 +5,8 @@
 # Kilden Go SDK
 
 [![Go Reference](https://pkg.go.dev/badge/go.kilden.io/sdk.svg)](https://pkg.go.dev/go.kilden.io/sdk)
-[![ci](https://github.com/freshworkstudio/kilden-sdk-go/actions/workflows/ci.yml/badge.svg)](https://github.com/freshworkstudio/kilden-sdk-go/actions/workflows/ci.yml)
-[![license](https://img.shields.io/github/license/freshworkstudio/kilden-sdk-go)](LICENSE)
+[![ci](https://github.com/kildenhq/kilden-sdk-go/actions/workflows/ci.yml/badge.svg)](https://github.com/kildenhq/kilden-sdk-go/actions/workflows/ci.yml)
+[![license](https://img.shields.io/github/license/kildenhq/kilden-sdk-go)](LICENSE)
 
 [Kilden](https://kilden.io) is a customer data platform — product analytics,
 campaigns and session replay on one event pipeline. This is the server-side
@@ -173,7 +173,7 @@ kilden.New(key,
 ## Spec
 
 This SDK implements the
-[Kilden server SDK specification](https://github.com/freshworkstudio/kilden-sdk-spec)
+[Kilden server SDK specification](https://github.com/kildenhq/kilden-sdk-spec)
 (spec version 0.1) and runs its frozen test vectors — wire payloads,
 byte-exact identity JWTs, flag-rollout hashing — against the spec's mock
 server in CI. Behavior changes land in the spec first, then here.
@@ -181,7 +181,7 @@ server in CI. Behavior changes land in the spec first, then here.
 ## Community
 
 - [Docs](https://docs.kilden.io) — product documentation.
-- [Discussions](https://github.com/freshworkstudio/kilden-sdk-go/discussions)
+- [Discussions](https://github.com/kildenhq/kilden-sdk-go/discussions)
   — questions and design conversations.
 
 ## License

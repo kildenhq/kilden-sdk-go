@@ -3,7 +3,7 @@
 // project's secret write key.
 //
 // The SDK implements the Kilden server SDK specification
-// (https://github.com/freshworkstudio/kilden-sdk-spec); its behavior
+// (https://github.com/kildenhq/kilden-sdk-spec); its behavior
 // contracts are the authority for anything this documentation leaves open.
 package kilden
 
