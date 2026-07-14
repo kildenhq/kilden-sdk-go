@@ -48,7 +48,7 @@ func (s *sender) send(batch []event) bool {
 		status, retryAfter, err := s.post(batch)
 
 		switch {
-		case err == nil && status == http.StatusOK:
+		case err == nil && status >= 200 && status < 300:
 			s.c.debugf("batch of %d delivered", len(batch))
 			return true
 		case err == nil && !retryable(status):
@@ -67,8 +67,8 @@ func (s *sender) send(batch []event) bool {
 }
 
 // post returns the HTTP status, the Retry-After value in seconds (0 when
-// absent) and any transport error. A 200 with a body that is not valid JSON
-// counts as a corrupt response and is reported as an error (retryable).
+// absent) and any transport error. Any 2xx is success — the response body is
+// never parsed; the status is the whole signal (SPEC.md §4.3).
 func (s *sender) post(batch []event) (int, int, error) {
 	payload := batchPayload{
 		WriteKey: s.c.writeKey,
@@ -107,13 +107,8 @@ func (s *sender) post(batch []event) (int, int, error) {
 	}
 	defer resp.Body.Close()
 
-	respBody, err := io.ReadAll(io.LimitReader(resp.Body, 1<<20))
-	if err != nil {
-		return 0, 0, err
-	}
-	if resp.StatusCode == http.StatusOK && !json.Valid(respBody) {
-		return 0, 0, errCorruptResponse
-	}
+	// Drain so the connection is reusable; the body itself carries no signal.
+	io.Copy(io.Discard, io.LimitReader(resp.Body, 1<<20))
 
 	retryAfter := 0
 	if v := resp.Header.Get("Retry-After"); v != "" {
@@ -121,12 +116,6 @@ func (s *sender) post(batch []event) (int, int, error) {
 	}
 	return resp.StatusCode, retryAfter, nil
 }
-
-var errCorruptResponse = &corruptResponseError{}
-
-type corruptResponseError struct{}
-
-func (*corruptResponseError) Error() string { return "corrupt response body" }
 
 // retryable per SPEC.md §4.3: 429 and 5xx retry; any other 4xx (including
 // 400/401/403/413) does not — retrying a 401 is spam.

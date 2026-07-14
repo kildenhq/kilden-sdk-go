@@ -43,7 +43,11 @@ func TestIntegrationRetryAfterAgainstMock(t *testing.T) {
 	}
 }
 
-func TestIntegrationCorruptResponseIsRetried(t *testing.T) {
+func TestIntegrationCorruptBodyOn2xxIsSuccess(t *testing.T) {
+	// SPEC.md §4.3: any 2xx is success and the body is never parsed — a 200
+	// with a garbage body must not trigger a retry (the mock consumes the
+	// armed failure without recording, so nothing is captured and nothing
+	// is re-sent).
 	m := mockServer(t)
 	m.reset(t)
 	m.post(t, "/__mock/fail", `{"times":1,"mode":"corrupt"}`)
@@ -53,13 +57,17 @@ func TestIntegrationCorruptResponseIsRetried(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer c.Close()
-	c.sender.sleep = func(time.Duration) bool { return true }
+	slept := false
+	c.sender.sleep = func(time.Duration) bool { slept = true; return true }
 
-	c.Track("user_1", "survives_corruption", nil)
+	c.Track("user_1", "fire_and_forget", nil)
 	c.Flush()
 
-	if events := m.captured(t); len(events) != 1 {
-		t.Fatalf("captured %d events, want 1", len(events))
+	if events := m.captured(t); len(events) != 0 {
+		t.Fatalf("captured %d events, want 0 (2xx consumed the batch)", len(events))
+	}
+	if slept {
+		t.Fatal("a 2xx must never be retried")
 	}
 }
 
