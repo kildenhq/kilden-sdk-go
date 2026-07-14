@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Question
+    url: https://github.com/freshworkstudio/kilden-sdk-go/discussions
+    about: Ask in Discussions — answers stay searchable for the next person.
