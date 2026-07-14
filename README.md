@@ -180,7 +180,7 @@ server in CI. Behavior changes land in the spec first, then here.
 
 ## Community
 
-- [Docs](https://docs.kilden.io) — product documentation.
+- [Docs](https://kilden.io/docs) — product documentation.
 - [Discussions](https://github.com/kildenhq/kilden-sdk-go/discussions)
   — questions and design conversations.
 
