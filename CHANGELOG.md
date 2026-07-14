@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.0-alpha.2] - 2026-07-14
+
+### Fixed
+
+- Any 2xx from `/capture` is success; the response body is never parsed
+  (spec clarification — a 200 with a corrupt body was retried before).
+
 ## [0.1.0-alpha.1] - 2026-07-14
 
 ### Added
@@ -20,5 +27,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Frozen rollout hashing (internal), pinned by the spec vectors.
 - Vector runners and failure-simulation tests against the spec mock server.
 
-[Unreleased]: https://github.com/freshworkstudio/kilden-sdk-go/compare/v0.1.0-alpha.1...HEAD
+[Unreleased]: https://github.com/freshworkstudio/kilden-sdk-go/compare/v0.1.0-alpha.2...HEAD
+[0.1.0-alpha.2]: https://github.com/freshworkstudio/kilden-sdk-go/compare/v0.1.0-alpha.1...v0.1.0-alpha.2
 [0.1.0-alpha.1]: https://github.com/freshworkstudio/kilden-sdk-go/releases/tag/v0.1.0-alpha.1
