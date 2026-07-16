@@ -12,6 +12,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: tag matches the Version constant
+        # SPEC §4.1 reports this constant in the User-Agent
+        # (`kilden-go/<version>`), and nothing else compares it to the tag —
+        # so v0.1.0-alpha.2 went out declaring 0.1.0-alpha.1 and no build
+        # noticed. There is no artifact upload to block here (the module proxy
+        # indexes the tag itself), so this cannot unpublish a bad tag; it makes
+        # the mistake loud immediately instead of never.
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          declared=$(sed -n 's/.*Version = "\(.*\)".*/\1/p' client.go | head -1)
+          if [ -z "$declared" ]; then
+            echo "::error::could not read the Version constant from client.go"
+            exit 1
+          fi
+          if [ "$tag" != "$declared" ]; then
+            echo "::error::tag $GITHUB_REF_NAME ships Version '$declared' — bump the constant in client.go to '$tag'"
+            exit 1
+          fi
+          echo "Version '$declared' matches tag $GITHUB_REF_NAME"
       - name: github release
         env:
           GH_TOKEN: ${{ github.token }}
