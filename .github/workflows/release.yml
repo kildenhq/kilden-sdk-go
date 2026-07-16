@@ -34,6 +34,16 @@ jobs:
       - name: github release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "$GITHUB_REF_NAME" --generate-notes
+        # No flag was ever passed, so GitHub marked every release "Latest" —
+        # alpha.2 was presented as the current release of the SDK. Decide from
+        # the tag. (kilden-sdk-ruby had the mirror image: --prerelease was
+        # unconditional, so its stable was flagged a prerelease and the repo
+        # reported no latest release at all.)
+        run: |
+          case "$GITHUB_REF_NAME" in
+            *-alpha*|*-beta*|*-rc*) flag=--prerelease ;;
+            *) flag=--latest ;;
+          esac
+          gh release create "$GITHUB_REF_NAME" --generate-notes "$flag"
       # There is no registry upload for Go: the module proxy indexes the tag
       # from the vanity path go.kilden.io/sdk once someone fetches it.

@@ -27,7 +27,7 @@ const (
 	closeDeadline        = 10 * time.Second
 
 	// Version is the SDK version reported in the User-Agent header.
-	Version = "0.1.0-alpha.2"
+	Version = "0.1.0-alpha.3"
 )
 
 // Client queues events in memory and delivers them in batches from a
