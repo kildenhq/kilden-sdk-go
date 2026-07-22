@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   release:
-    runs-on: ubuntu-latest
+    runs-on: kilden-runners
     steps:
       - uses: actions/checkout@v4
       - name: tag matches the Version constant
